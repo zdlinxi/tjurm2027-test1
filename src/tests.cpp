@@ -2,23 +2,27 @@
 
 // 练习1，实现库函数strlen
 int my_strlen(char *str) {
-    /**
-     * 统计字符串的长度，太简单了。
-     */
+    int length = 0;
+    while (*str != '\0') {
+        ++length;
+        ++str;
+    }
+    return length;
 
-    // IMPLEMENT YOUR CODE HERE
-    return 0;
 }
 
 
 // 练习2，实现库函数strcat
 void my_strcat(char *str_1, char *str_2) {
-    /**
-     * 将字符串str_2拼接到str_1之后，我们保证str_1指向的内存空间足够用于添加str_2。
-     * 注意结束符'\0'的处理。
-     */
-
-    // IMPLEMENT YOUR CODE HERE
+    while (*str_1 != '\0') {
+        ++str_1;
+    }
+    while (*str_2 != '\0') {
+        *str_1 = *str_2;
+        ++str_1;
+        ++str_2;
+    }
+    *str_1 = '\0';
 }
 
 

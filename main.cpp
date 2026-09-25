@@ -2,7 +2,7 @@
 #include "tests.h"
 #include <iostream>
 #include <cstring>
-
+#include <bits/stdc++.h>
 
 
 
