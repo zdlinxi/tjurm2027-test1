@@ -1,4 +1,5 @@
 #include "tests.h"
+#include <bits/stdc++.h>
 
 // 练习1，实现库函数strlen
 int my_strlen(char *str) {
@@ -23,21 +24,31 @@ void my_strcat(char *str_1, char *str_2) {
         ++str_2;
     }
     *str_1 = '\0';
+    return;
 }
 
 
 // 练习3，实现库函数strstr
 char* my_strstr(char *s, char *p) {
-    /**
-     * 在字符串s中搜索字符串p，如果存在就返回第一次找到的地址，不存在就返回空指针(0)。
-     * 例如：
-     * s = "123456", p = "34"，应该返回指向字符'3'的指针。
-     */
-
-    // IMPLEMENT YOUR CODE HERE
+    if (*p=='\0') {
+        return s;
+    }
+    else {
+        while (*s!='\0') {
+            char *zhizhen1=s;
+            char *zhizhen2=p;   
+            while (*zhizhen1!='\0' && *zhizhen2!='\0' && *zhizhen1==*zhizhen2) {
+                ++zhizhen1;
+                ++zhizhen2;
+            }
+            if (*zhizhen2=='\0') {
+                return s;
+            }
+            ++s;
+        }
+    }
     return 0;
 }
-
 
 /**
  * ================================= 背景知识 ==================================
