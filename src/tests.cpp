@@ -88,9 +88,7 @@ char* my_strstr(char *s, char *p) {
  *   理解了图片的存储之后，再开始编写代码。
  */
 
-
 // 练习4，将彩色图片(rgb)转化为灰度图片
-void rgb2gray(float *in, float *out, int h, int w) {
     /**
      * 编写这个函数，将一张彩色图片转化为灰度图片。以下是各个参数的含义：
      * (1) float *in:  指向彩色图片对应的内存区域（或者说数组）首地址的指针。
@@ -111,11 +109,19 @@ void rgb2gray(float *in, float *out, int h, int w) {
      */
 
     // IMPLEMENT YOUR CODE HERE
-    // ...
+void rgb2gray(float *in, float *out, int h, int w) {
+    int i;
+    const float red=0.2989f;
+    const float green=0.5870f;
+    const float blue=0.1140f;
+    for (i=0;i<h*w;i++){
+            int rgb;
+            rgb=i*3;
+            out[i]=blue*in[rgb+2]+green*in[rgb+1]+red*in[rgb];
+    }
 }
 
 // 练习5，实现图像处理算法 resize：缩小或放大图像
-void resize(float *in, float *out, int h, int w, int c, float scale) {
     /**
      * 图像处理知识：
      *  1.单线性插值法
@@ -211,14 +217,15 @@ void resize(float *in, float *out, int h, int w, int c, float scale) {
      *        所以需要对其进行边界检查
      */
 
-    int new_h = h * scale, new_w = w * scale;
+
     // IMPLEMENT YOUR CODE HERE
+void resize(float *in, float *out, int h, int w, int c, float scale) {
+    int new_h = h * scale, new_w = w * scale;
 
 }
 
 
 // 练习6，实现图像处理算法：直方图均衡化
-void hist_eq(float *in, int h, int w) {
     /**
      * 将输入图片进行直方图均衡化处理。参数含义：
      * (1) float *in: 输入的灰度图片。
@@ -236,4 +243,6 @@ void hist_eq(float *in, int h, int w) {
      */
 
     // IMPLEMENT YOUR CODE HERE
+void hist_eq(float *in, int h, int w) {
+
 }
