@@ -1,9 +1,12 @@
 #include "tests.h"
 #include <bits/stdc++.h>
 
+using namespace std;
+
 // 练习1，实现库函数strlen
 int my_strlen(char *str) {
     int length = 0;
+
     while (*str != '\0') {
         ++length;
         ++str;
@@ -18,12 +21,14 @@ void my_strcat(char *str_1, char *str_2) {
     while (*str_1 != '\0') {
         ++str_1;
     }
+
     while (*str_2 != '\0') {
         *str_1 = *str_2;
         ++str_1;
         ++str_2;
     }
     *str_1 = '\0';
+
     return;
 }
 
@@ -33,6 +38,7 @@ char* my_strstr(char *s, char *p) {
     if (*p=='\0') {
         return s;
     }
+
     else {
         while (*s!='\0') {
             char *zhizhen1=s;
@@ -47,6 +53,7 @@ char* my_strstr(char *s, char *p) {
             ++s;
         }
     }
+
     return 0;
 }
 
@@ -114,6 +121,7 @@ void rgb2gray(float *in, float *out, int h, int w) {
     const float red=0.2989f;
     const float green=0.5870f;
     const float blue=0.1140f;
+
     for (i=0;i<h*w;i++){
             int rgb;
             rgb=i*3;
@@ -221,8 +229,66 @@ void rgb2gray(float *in, float *out, int h, int w) {
     // IMPLEMENT YOUR CODE HERE
 void resize(float *in, float *out, int h, int w, int c, float scale) {
     int new_h = h * scale, new_w = w * scale;
+    if (in == nullptr || out == nullptr || h <= 0 || w <= 0 || c <= 0 || scale <= 0.0f) {
+        return;
+    }
 
+    if (new_h <= 0 || new_w <= 0) {
+        return;
+    }
+
+    for (int y = 0; y < new_h; ++y) {
+        float src_y = y / scale;
+
+        int y1 = static_cast<int>(src_y);
+        if (y1 < 0) y1 = 0;
+        if (y1 >= h) y1 = h - 1;
+
+        int y2 = y1 + 1;
+        if (y2 >= h) y2 = h - 1;
+
+        float dy = src_y - y1;
+        if (dy < 0.0f) dy = 0.0f;
+        if (dy > 1.0f) dy = 1.0f;
+
+        for (int x = 0; x < new_w; ++x) {
+            float src_x = x / scale;
+
+            int x1 = static_cast<int>(src_x);
+            if (x1 < 0) x1 = 0;
+            if (x1 >= w) x1 = w - 1;
+
+            int x2 = x1 + 1;
+            if (x2 >= w) x2 = w - 1;
+
+            float dx = src_x - x1;
+            if (dx < 0.0f) dx = 0.0f;
+            if (dx > 1.0f) dx = 1.0f;
+
+            int out_base = (y * new_w + x) * c;
+            int idx11 = (y1 * w + x1) * c;
+            int idx21 = (y1 * w + x2) * c;
+            int idx12 = (y2 * w + x1) * c;
+            int idx22 = (y2 * w + x2) * c;
+
+            for (int ch = 0; ch < c; ++ch) {
+                float v11 = in[idx11 + ch];
+                float v21 = in[idx21 + ch];
+                float v12 = in[idx12 + ch];
+                float v22 = in[idx22 + ch];
+
+                float val =
+                    v11 * (1.0f - dx) * (1.0f - dy) +
+                    v21 * dx * (1.0f - dy) +
+                    v12 * (1.0f - dx) * dy +
+                    v22 * dx * dy;
+
+                out[out_base + ch] = val;
+            }
+        }
+    }
 }
+
 
 
 // 练习6，实现图像处理算法：直方图均衡化
@@ -244,5 +310,31 @@ void resize(float *in, float *out, int h, int w, int c, float scale) {
 
     // IMPLEMENT YOUR CODE HERE
 void hist_eq(float *in, int h, int w) {
+    int pinlv[256]={0};
+    long long xiangsu=h*w;
+    unsigned char yingshe[256];
+    long long sum=0;
+
+    for (int i=0;i<h;++i) {
+        for (int j=0; j<w;++j) {
+            int val=static_cast<int>(round(in[i*w+j]));
+            val=max(0,min(255,val));
+            pinlv[val]++;//++
+        }
+    }
+
+    for (int huidu=0;huidu<256;++huidu) {
+        sum+=pinlv[huidu];
+        double xinhuidu=255.0*static_cast<double>(sum)/xiangsu;
+        yingshe[huidu]=static_cast<unsigned char>(round(xinhuidu));
+    }
+
+    for (int i =0; i<h; ++i) {
+        for (int j=0; j<w;++j) {
+            int val=static_cast<int>(round(in[i*w+j]));
+            val=max(0,min(255, val));
+            in[i*w+j]=static_cast<float>(yingshe[val]);
+        }
+    }
 
 }
